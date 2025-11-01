@@ -90,6 +90,7 @@ add_executable(app_lame)
 target_sources(app_lame
     PRIVATE
     src/main.c
+    src/interrupt.c
 )
 
 target_link_libraries(app_lame cubemx STM32_Drivers)

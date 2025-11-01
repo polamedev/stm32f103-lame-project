@@ -1,11 +1,10 @@
 #include "cubemx.h"
+#include "interrupt.h"
 
 #include <stdbool.h>
 
 #if 1
 // Приложение обычного блинка на HAL
-
-volatile bool keyPress = false;
 
 int main()
 {
@@ -14,18 +13,12 @@ int main()
     while (1) {
         if (keyPress) {
             keyPress = false;
-            delay = delay != 500 ? 500 : 100; 
+            delay    = delay != 500 ? 500 : 100;
         }
 
         HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
         HAL_Delay(delay);
     }
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-    UNUSED(GPIO_Pin);
-    keyPress = true;
 }
 
 #endif
