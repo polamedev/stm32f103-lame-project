@@ -3,23 +3,18 @@
 
 Что нужно сделать с проектом, чтобы заработала генерация
 
-### Файл gen-stm32f103-lame-project/cmake/stm32cubemx/CMakeLists.txt
-
-заменить CMAKE_SOURCE_DIR на CMAKE_CURRENT_SOURCE_DIR
-
-set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -T \"${CMAKE_CURRENT_SOURCE_DIR}/STM32F103XX_FLASH.ld\"")
-
 
 ### Файл gen-stm32f103-lame-project/CMakeLists.txt 
 
-* Сделать замену CMAKE_SOURCE_DIR на CMAKE_CURRENT_SOURCE_DIR, Нужно так как cubeMX генерирует список включаемых файлов относительно CMAKE_SOURCE_DIR, а мы находимся в подпроекте
+* приравнять CMAKE_SOURCE_DIR на CMAKE_CURRENT_SOURCE_DIR в начале файла. Нужно так как cubeMX генерирует список включаемых файлов относительно CMAKE_SOURCE_DIR, а мы находимся в подпроекте. По выходу из файла CMAKE_SOURCE_DIR вернется на прежнее значение
 
-set(OLD_CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+```cmake
 set(CMAKE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+```
 
 * Заменить add_subdirectory(cmake/stm32cubemx/CMakeLists.txt) на include(cmake/stm32cubemx/CMakeLists.txt)
 
-### Файл gen-stm32f103-lame-project/Core/Inc/cubemx.h
+### Добавить gen-stm32f103-lame-project/Core/Inc/cubemx.h
 
 ### Файл gen-stm32f103-lame-project/Core/Src/main.c
 
