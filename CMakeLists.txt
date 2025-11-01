@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.21)
 
+# Подключаем подпроект cubeMX это нужно делать до объявления основного проекта project(
+# почему так, точно не знаю
 add_subdirectory(gen-stm32f103-lame-project)
 
-# include("gen-stm32f103-lame-project/cmake/gcc-arm-none-eabi.cmake")
+# Подключаем файл toolchaina нужно делать тоже до объявления  project(), чтобы сообщить основные настройки
+include("cmake/gcc-arm-none-eabi.cmake")
 
 
 # Основные настройки проекта
