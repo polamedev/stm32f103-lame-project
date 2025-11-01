@@ -1,11 +1,17 @@
 cmake_minimum_required(VERSION 3.21)
 
-# Подключаем файл toolchaina нужно делать тоже до объявления  project(), чтобы сообщить основные настройки
-include("cmake/gcc-arm-none-eabi.cmake")
+option(BUILD_TESTS "Build tests" OFF) # Нужно ли собирать тесты
 
-# Подключаем подпроект cubeMX это нужно делать до объявления основного проекта project(
-# почему так, точно не знаю
-add_subdirectory(gen-stm32f103-lame-project)
+if(NOT BUILD_TESTS)
+    # Если не нужен тестовый таргет, то нужно будет собрат основной таргет, для это определим необходимый набор 
+    # Инструментов для stm
+
+    # Подключаем файл toolchain нужно делать тоже до объявления  project(), чтобы сообщить основные настройки
+    include("cmake/gcc-arm-none-eabi.cmake")
+endif()
+
+
+
 
 # Основные настройки проекта
 project(
@@ -27,7 +33,6 @@ project(
 # -----------------------------------------------------------------------------------------------------------------------------------
 
 # # Опции сборки
-# option(LAME_BUILD_TESTS       "Build lame tests"            OFF)  # Нужно ли собирать тесты для библиотеки
 # option(LAME_BUILD_MOCKS       "Build  lame mocks lib"       OFF)  # Нужно ли собирать мок-объекты библиотеки
 # option(LAME_BUILD_MOCKS_TESTS "Build tests lame::mocks lib" OFF)  # Нужно ли собирать тесты для библиотеки мок-объектов, также опция определяется в самой библиотеки тестов
 
@@ -44,66 +49,36 @@ endif()
 # set(CMAKE_DEBUG_POSTFIX -dev)
 
 # -----------------------------------------------------------------------------------------------------------------------------------
-# Настройка таргета библиотеки
+# Настройка таргета
 # -----------------------------------------------------------------------------------------------------------------------------------
 
-# # Добавление библиотеки
-# add_library(lame-stm32f1 STATIC)
+if(NOT BUILD_TESTS)
+    # Если не определена сборка тестов, то собираем обычный проект для stm32
 
-# # Добавляем alias для библиотеки, полезно для избежания конфликта имен
-# add_library(lame::lame-stm32f1 ALIAS lame-stm32f1)
+    # Подключаем подпроект cubeMX c генерацией исходников
+    add_subdirectory(gen-stm32f103-lame-project)
 
-# # VERSION - Устанавливаем версию библиотеки из версии проекта
-# # SOVERSION - Версия совместимости - определяет версию API стоит изменять, когда меняется API, поведение или используемый интерфейс
-# set_target_properties(
-#     lame-stm32f1
-#     PROPERTIES VERSION ${PROJECT_VERSION}
-#     SOVERSION ${PROJECT_VERSION_MAJOR}
-# )
+    add_executable(app_lame)
 
-# target_sources(lame-stm32f1
-#     PRIVATE
-#     main.c
-# )
+    target_sources(app_lame
+        PRIVATE
+        core/main.c
+        core/interrupt.c
+    )
 
+    target_link_libraries(app_lame cubemx STM32_Drivers)
 
-# target_include_directories(lame-stm32f1
-#     # Пути включения доступные только библиотеке
-#     PRIVATE
-#     src
-#     include/lame/device
-#     include/lame/drivers
-#     include/lame/utils
+    target_link_options(app_lame PRIVATE "-T${CMAKE_SOURCE_DIR}/gen-stm32f103-lame-project/STM32F103XX_FLASH.ld")
+    target_link_options(app_lame PRIVATE "-Wl,-Map=${CMAKE_PROJECT_NAME}.map -Wl,--gc-sections")
 
-#     # Пути включения доступные самой библиотеке и пользователям
-#     PUBLIC
-#     # Используется выражения генератора
-#     # При сборке BUILD_INTERFACE заменится на include
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#     # При установке INSTALL_INTERFACE заменится на католог включения при установки
-#     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-# )
+else()
+    # Иначе собираем таргет с тестами
 
-add_executable(app_lame)
-
-target_sources(app_lame
-    PRIVATE
-    core/main.c
-    core/interrupt.c
-)
-
-target_link_libraries(app_lame cubemx STM32_Drivers)
-
-target_link_options(app_lame PRIVATE "-T${CMAKE_SOURCE_DIR}/gen-stm32f103-lame-project/STM32F103XX_FLASH.ld")
-target_link_options(app_lame PRIVATE "-Wl,-Map=${CMAKE_PROJECT_NAME}.map -Wl,--gc-sections")
-
+    # Включение тестирования необходимо в корневом файле
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
 # -----------------------------------------------------------------------------------------------------------------------------------
 # Добавление других таргетов
 # -----------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-# add_subdirectory(lame-stm32f1/tests)
-
