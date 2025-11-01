@@ -11,3 +11,10 @@ int main()
     }
 }
 #endif
+
+void Error_Handler(void)
+{
+    __disable_irq();
+    while (1) {
+    }
+}
