@@ -2,9 +2,7 @@
 
 int main(void)
 {
-    HAL_Init();
-
-    SystemClock_Config();
+    MX_Init();
 
     while (1) {
     }
