@@ -14,6 +14,8 @@ set(CMAKE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 * Заменить add_subdirectory(cmake/stm32cubemx/CMakeLists.txt) на include(cmake/stm32cubemx/CMakeLists.txt)
 
+* Убрать подключение include("cmake/gcc-arm-none-eabi.cmake"). gcc-arm-none-eabi.cmake будет подключаться в cmake файле корня
+
 ### Добавить gen-stm32f103-lame-project/Core/Inc/cubemx.h
 
 ### Файл gen-stm32f103-lame-project/Core/Src/main.c
