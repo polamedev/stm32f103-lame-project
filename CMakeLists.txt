@@ -82,7 +82,18 @@ endif()
 #     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 # )
 
-# add_executable(app core/main.c)
+add_executable(app_lame)
+
+target_sources(app_lame
+    PRIVATE
+    src/main.c
+)
+
+target_link_libraries(app_lame cubemx STM32_Drivers)
+
+target_link_options(app_lame PRIVATE "-T${CMAKE_SOURCE_DIR}/gen-stm32f103-lame-project/STM32F103XX_FLASH.ld")
+target_link_options(app_lame PRIVATE "-Wl,-Map=${CMAKE_PROJECT_NAME}.map -Wl,--gc-sections")
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------
 # Добавление других таргетов

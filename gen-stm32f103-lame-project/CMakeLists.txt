@@ -40,7 +40,10 @@ message("Build type: " ${CMAKE_BUILD_TYPE})
 enable_language(C ASM)
 
 # Create an executable object type
-add_executable(${CMAKE_PROJECT_NAME})
+# add_executable(${CMAKE_PROJECT_NAME})
+add_library(${CMAKE_PROJECT_NAME} OBJECT)
+add_library(cubemx ALIAS ${CMAKE_PROJECT_NAME})
+
 
 # Add STM32CubeMX generated sources
 include(cmake/stm32cubemx/CMakeLists.txt)
