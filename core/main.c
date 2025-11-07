@@ -8,12 +8,12 @@
 
 int main()
 {
+    interrupt_init();
     MX_Init();
     uint32_t delay = 500;
     while (1) {
-        if (keyPress) {
-            keyPress = false;
-            delay    = delay != 500 ? 500 : 100;
+        if (Event_Take(&keyPress)) {
+            delay = delay != 500 ? 500 : 100;
         }
 
         HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);

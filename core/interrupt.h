@@ -1,3 +1,5 @@
-#include <stdbool.h>
+#include <lame/utils/Event.h>
 
-extern volatile bool keyPress;
+extern Event keyPress;
+
+void interrupt_init();
