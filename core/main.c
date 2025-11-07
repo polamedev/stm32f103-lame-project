@@ -3,6 +3,7 @@
 
 #include <lame/drivers/Pin.h>
 #include <lame/drivers/Pin_Impl.h>
+#include <lame/utils/SoftTimer.h>
 
 #include <stdbool.h>
 
@@ -20,13 +21,20 @@ int main()
 
     uint32_t delay = 500;
 
+    SoftTimer timer;
+
+    SoftTimer_Init(&timer, SoftTimer_ModePeriodic, 500);
+    SoftTimer_Start(&timer);
+
     while (1) {
         if (Event_Take(&keyPress)) {
             delay = delay != 500 ? 500 : 100;
+            SoftTimer_SetPeriod(&timer, delay);
         }
 
-        Pin_Toggle(&pin);
-        HAL_Delay(delay);
+        if (SoftTimer_Occur(&timer)) {
+            Pin_Toggle(&pin);
+        }
     }
 }
 
