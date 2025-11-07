@@ -1,0 +1,3 @@
+[submodule "lib/lame"]
+	path = lib/lame
+	url = git@github.com:polamedev/lame.git
