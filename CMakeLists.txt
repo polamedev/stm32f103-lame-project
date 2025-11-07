@@ -7,7 +7,7 @@ if(NOT BUILD_TESTS)
     # Инструментов для stm
 
     # Подключаем файл toolchain нужно делать тоже до объявления  project(), чтобы сообщить основные настройки
-    include("cmake/gcc-arm-none-eabi.cmake")
+    include(cmake/gcc-arm-none-eabi.cmake)
 endif()
 
 
