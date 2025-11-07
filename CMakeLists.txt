@@ -69,7 +69,7 @@ if(NOT BUILD_TESTS)
     target_link_libraries(app_lame cubemx STM32_Drivers lame)
 
     target_link_options(app_lame PRIVATE "-T${CMAKE_SOURCE_DIR}/gen-stm32f103-lame-project/STM32F103XX_FLASH.ld")
-    target_link_options(app_lame PRIVATE "-Wl,-Map=${CMAKE_PROJECT_NAME}.map -Wl,--gc-sections")
+    target_link_options(app_lame PRIVATE "-Wl,-Map=${CMAKE_PROJECT_NAME}.map")
 
 else()
     # Иначе собираем таргет с тестами
