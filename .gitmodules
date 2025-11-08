@@ -1,0 +1,8 @@
+[submodule "lib/lame"]
+	path = lib/lame
+	url = https://github.com/polamedev/lame.git
+	branch = main
+[submodule "lib/lame-stm32-port"]
+	path = lib/lame-stm32-port
+	url = https://github.com/polamedev/lame-stm32-port.git
+	branch = main

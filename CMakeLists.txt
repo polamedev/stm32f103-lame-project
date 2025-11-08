@@ -72,7 +72,7 @@ if(NOT BUILD_TESTS)
     target_link_options(app_lame PRIVATE "-T${CMAKE_SOURCE_DIR}/gen-stm32f103-lame-project/STM32F103XX_FLASH.ld")
     target_link_options(app_lame PRIVATE "-Wl,-Map=${CMAKE_PROJECT_NAME}.map")
 
-    add_subdirectory(lib/lame-portable-stm32)
+    add_subdirectory(lib/lame-stm32-port)
 
 else()
     # Иначе собираем таргет с тестами
