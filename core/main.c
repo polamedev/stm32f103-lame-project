@@ -2,7 +2,7 @@
 #include "interrupt.h"
 
 #include <lame/drivers/Pin.h>
-#include <lame/drivers/Pin_Impl.h>
+#include <lame/port/Pin_Impl.h>
 #include <lame/utils/SoftTimer.h>
 
 #include <stdbool.h>
