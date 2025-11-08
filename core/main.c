@@ -1,72 +1,22 @@
 #include "bsp/board.h"
 
-#include <lame/drivers/Pin.h>
-#include <lame/utils/SoftTimer.h>
-
-#include <stdbool.h>
-
-#if 1
-// Приложение обычного блинка на Lame Pin
+#include <lame/device/Led.h>
 
 int main()
 {
     board_init();
 
-    SoftTimer timer;
-    SoftTimer_Init(&timer, SoftTimer_ModePeriodic, 500);
-    SoftTimer_Start(&timer);
+    Led_SetBlinkCount(led, 1);
+    Led_StartBlink(led);
 
     while (1) {
+        Led_Task();
         if (Event_Take(&keyPress)) {
-            unsigned delay = SoftTimer_GetPeriod(&timer) != 500
-                                 ? 500
-                                 : 100;
-            SoftTimer_SetPeriod(&timer, delay);
+            unsigned newCount = Led_GetBlinkCount(led) + 1;
+            if (newCount > 5) {
+                newCount = 1;
+            }
+            Led_SetBlinkCount(led, newCount);
         }
-
-        if (SoftTimer_Occur(&timer)) {
-            Pin_Toggle(pin);
-        }
-    }
-}
-
-#endif
-
-#if 0
-// Приложение обычного блинка на HAL
-
-int main()
-{
-    interrupt_init();
-    MX_Init();
-    uint32_t delay = 500;
-    while (1) {
-        if (Event_Take(&keyPress)) {
-            delay = delay != 500 ? 500 : 100;
-        }
-
-        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-        HAL_Delay(delay);
-    }
-}
-
-#endif
-
-#if 0
-// Приложение обычного блинка на HAL
-int main()
-{
-    MX_Init();
-    while (1) {
-        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-        HAL_Delay(500);
-    }
-}
-#endif
-
-void Error_Handler(void)
-{
-    // __disable_irq();
-    while (1) {
     }
 }
