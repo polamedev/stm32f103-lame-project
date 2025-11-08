@@ -1,18 +1,10 @@
-#include "interrupt.h"
-#include "lame/utils/Event.h"
+#include "board.h"
 
 #include <cubemx.h>
 
 /**
  * Генерацию обработчиков прерываний можно выборочно отключаться в cubemx, тогда их можно определять в этом файле  
  */
-
-Event keyPress;
-
-void interrupt_init()
-{
-    Event_Init(&keyPress);
-}
 
 void EXTI0_IRQHandler()
 {

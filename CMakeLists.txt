@@ -63,10 +63,12 @@ if(NOT BUILD_TESTS)
     target_sources(app_lame
         PRIVATE
         core/main.c
-        core/interrupt.c
+        bsp/board.c
+        bsp/interrupt.c
     )
 
-    # TODO: Важно: Подключить библиотеку lame нужно перед lame-stm32, не знаю почему
+    target_include_directories(app_lame PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
     target_link_libraries(app_lame cubemx STM32_Drivers lame)
 
     target_link_options(app_lame PRIVATE "-T${CMAKE_SOURCE_DIR}/gen-stm32f103-lame-project/STM32F103XX_FLASH.ld")

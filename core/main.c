@@ -1,8 +1,6 @@
-#include "cubemx.h"
-#include "interrupt.h"
+#include "bsp/board.h"
 
 #include <lame/drivers/Pin.h>
-#include <lame/port/Pin_Impl.h>
 #include <lame/utils/SoftTimer.h>
 
 #include <stdbool.h>
@@ -12,28 +10,22 @@
 
 int main()
 {
-    interrupt_init();
-    MX_Init();
-
-    struct Pin_Impl pin;
-    pin.GPIO_Pin = LED_Pin;
-    pin.GPIOx    = LED_GPIO_Port;
-
-    uint32_t delay = 500;
+    board_init();
 
     SoftTimer timer;
-
     SoftTimer_Init(&timer, SoftTimer_ModePeriodic, 500);
     SoftTimer_Start(&timer);
 
     while (1) {
         if (Event_Take(&keyPress)) {
-            delay = delay != 500 ? 500 : 100;
+            unsigned delay = SoftTimer_GetPeriod(&timer) != 500
+                                 ? 500
+                                 : 100;
             SoftTimer_SetPeriod(&timer, delay);
         }
 
         if (SoftTimer_Occur(&timer)) {
-            Pin_Toggle(&pin);
+            Pin_Toggle(pin);
         }
     }
 }
@@ -74,7 +66,7 @@ int main()
 
 void Error_Handler(void)
 {
-    __disable_irq();
+    // __disable_irq();
     while (1) {
     }
 }
