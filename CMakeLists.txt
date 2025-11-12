@@ -76,6 +76,10 @@ if(NOT BUILD_TESTS)
 
     add_subdirectory(lib/lame-stm32-port)
 
+    # Добавляем интерфейсную библиотеку с настройками библиотеки lame
+    add_library(lame-config INTERFACE)
+    target_include_directories(lame-config INTERFACE config)
+
 else()
     # Иначе собираем таргет с тестами
 
