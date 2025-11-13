@@ -55,7 +55,7 @@ static void MX_NVIC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-__weak
+#if 0 // Комментируем название main
 /* USER CODE END 0 */
 
 /**
@@ -66,8 +66,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  return 0;
-}
+#endif
 
 // Определяем функцию MX_Init, в которую генерация будет добавлять вызовы инициализации периферии
 void MX_Init() {
@@ -195,7 +194,44 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-__weak
+
+__weak int main()
+{
+  MX_Init();
+
+  while (1) {
+  }
+}
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+__weak void Error_Handler(void)
+{
+  __disable_irq();
+  while (1)
+  {
+  }
+}
+
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+__weak void assert_failed(uint8_t *file, uint32_t line)
+{
+  UNUSED(file);
+  UNUSED(line);
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+}
+
+#if 0 // Комментируем конец файла c функциями Error_Handler и assert_failed
+
 /* USER CODE END 4 */
 
 /**
@@ -226,6 +262,7 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+#endif
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
