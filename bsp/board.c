@@ -2,7 +2,7 @@
 
 #include "cubemx.h"
 
-#include <lame/port/Pin_Impl.h>
+#include <lame/port/PinImpl.h>
 #include <lame/utils/option_exist.h>
 
 // #define OLD_BLUE_PILL
@@ -35,7 +35,7 @@ static void ledInit()
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
-    static struct Pin_Impl pinImpl;
+    static struct PinImpl pinImpl;
     pinImpl.GPIO_Pin = LED_Pin;
     pinImpl.GPIOx    = LED_GPIO_Port;
     led              = Led_Create(&pinImpl, false);
